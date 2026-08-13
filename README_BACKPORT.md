@@ -1,8 +1,9 @@
-# SynEdit-Classic — Delphi 7 to 11 (based on SynEdit/SynEdit, Jan 2022)
+# SynEdit-Classic — Delphi 7 to 13 (based on SynEdit/SynEdit, Jan 2022)
 
 Based on the final state of the official repository
 [SynEdit/SynEdit](https://github.com/SynEdit/SynEdit) (last commit 2022-01-29) —
-the last SynEdit line that supports Delphi 7 (officially D7 through 11 Alexandria).
+the last SynEdit line that supports Delphi 7 (upstream went to 11 Alexandria; this
+fork adds 12 Athens and 13).
 The modern line lives on in the
 [VSoft fork](https://github.com/VSoftTechnologies/SynEdit) (10.4+, DirectWrite,
 multi-caret); the two are no longer mergeable.
@@ -31,8 +32,17 @@ plain Delphi installation is all that is needed.
 |---|---|
 | `Packages\D7` | `SynEdit_R7.dpk` / `SynEdit_D7.dpk` (plus the upstream CLX, PE and TNT variants) |
 | `Packages\D2009` | `SynEdit_R2009.dpk` / `SynEdit_D2009.dpk` |
-| `Packages\110A` | upstream's Delphi 11 packages, path adjusted; the runtime package is built and verified |
+| `Packages\110A`, `Packages\120A`, `Packages\130F` | Delphi 11, 12 and 13; runtime and design time package built and verified |
 | `Packages\2010` … `Packages\104S`, `Packages\XE*` | upstream's packages, paths adjusted for the new highlighter folder, otherwise untouched and untested here |
+
+Delphi 12 and 13 were not detected at all before: `SynEdit.inc` mapped `VERxxx`
+to its `SYN_COMPILER_*` symbols only up to `VER350` (Delphi 11), so on 12 and 13
+not a single one was defined and every conditional fell back to its oldest
+branch. The visible failure was a type error far away, in `SynUnicode.pas`:
+`E2010 Incompatible types: 'AnsiChar' and 'Char'`. `VER360` and `VER370` are
+mapped now, along with the matching `SYN_COMPILER_29/30` and
+`SYN_DELPHI_12_0/13_0` cascades. `SynEditJedi.inc` stops at RAD Studio 2009, but
+nothing in the sources reads its symbols, so it is not involved.
 
 Every package that uses `{$R *.res}` now has its resource file next to it. Upstream
 left most of them out because the IDE generates them, which is fine in the IDE but
