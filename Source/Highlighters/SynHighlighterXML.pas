@@ -952,7 +952,7 @@ begin
   case FLine[Run] of
     '0'..'9', 'a'..'z', 'A'..'Z', '_', '.', ':', '-':
       Result := True;
-    else if FLine[Run] > 'À' then // TODO: this here is very vague, see above
+    else if FLine[Run] > WideChar(#$00C0) then // TODO: this here is very vague, see above
       Result := True
     else
       Result := False;
