@@ -13,7 +13,7 @@ The Original Code is based on mwCompletionProposal.pas by Cyrille de Brebisson,
 part of the mwEdit component suite.
 Portions created by Cyrille de Brebisson are Copyright (C) 1999
 Cyrille de Brebisson.
-Unicode translation by Maël Hörz.
+Unicode translation by Maï¿½l Hï¿½rz.
 All Rights Reserved.
 
 Contributors to the SynEdit and mwEdit projects are listed in the
@@ -1448,7 +1448,12 @@ procedure TSynBaseCompletionProposalForm.KeyPress(var Key: Char);
 begin
 end;
 
-{$MESSAGE 'Check what must be adapted in DoKeyPressW and related methods'}
+{.$MESSAGE 'Check what must be adapted in DoKeyPressW and related methods'}
+// Retired: the chain is complete and in use - WMChar feeds DoKeyPressW, which
+// calls the virtual KeyPressW carrying the actual logic. The inherited ANSI
+// KeyPress stays empty on purpose so a character is never handled twice.
+// The identical note next to TCustomSynEdit.DoKeyPressW in SynEdit.pas was
+// disabled the same way long ago.
 procedure TSynBaseCompletionProposalForm.DoKeyPressW(Key: WideChar);
 begin
   if Key <> #0 then
