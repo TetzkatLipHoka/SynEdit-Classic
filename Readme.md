@@ -1,3 +1,20 @@
+SynEdit-Classic
+===============
+
+**This fork keeps the classic SynEdit line alive for Delphi 7 - 11**, including
+ready-to-build Delphi 7 and Delphi 2009 packages, a few bundled extras and a
+handful of fixes. See **[README_BACKPORT.md](README_BACKPORT.md)** for the
+directory layout, the package setup, build instructions and the full list of
+changes.
+
+The modern line lives on in the
+[VSoft fork](https://github.com/VSoftTechnologies/SynEdit) (Delphi 10.4+,
+DirectWrite, multi-caret); the two are no longer mergeable.
+
+The original readme of the upstream project follows.
+
+---
+
 SynEdit
 =======
 
