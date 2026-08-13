@@ -209,7 +209,13 @@ begin
     if (SLine <> '') and
       (GetHighlighterAttriAtRowCol(LinesToScan, Line, 1) = SectionAttri)
     then
-      FoldRanges.StopStartFoldRange(Line + 1, 0)
+      // The VSoft fork calls StopStartFoldRange here, which needs a third
+      // fold state (focCloseOpen) that this tree's TSynFoldRanges does not
+      // have. StartFoldRange with an indent of 0 does the same thing with the
+      // API present here: its focOpen branch first closes every open range
+      // whose indent is >= 0, ending it at the line before this one, and then
+      // opens the new range on this line.
+      FoldRanges.StartFoldRange(Line + 1, 0, 0)
     else
       FoldRanges.NoFoldInfo(Line + 1)
   end;
