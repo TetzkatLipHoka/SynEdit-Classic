@@ -1,39 +1,46 @@
-# Compiled source #
-###################
+# ---------------------------------------------------------------------------
+# Build output
+# ---------------------------------------------------------------------------
+Win32/
+Win64/
+dcu/
 *.dcu
-*.obj
-*.exe
 *.bpl
-*.bpi
 *.dcp
-*.rsm
-*.stat
+*.obj
+*.o
+*.drc
 *.map
+*.rsm
+*.tds
 
-# Generated source #
-###################
-*.hpp
-
-# Backup files    #
-###################
-*.~*
-
-# IDE Files	  #
-###################
-*.dproj.local
-*.groupproj.local
+# ---------------------------------------------------------------------------
+# IDE state (per user)
+# ---------------------------------------------------------------------------
+*.local
 *.identcache
 *.dsk
+*.stat
 *.tvsconfig
-*.otares
-*.drc
-*.rc
-*.res
-*.local
+*.skincfg
+__history/
+__recovery/
+*.~*
 
-# Output Folders  #
-###################
-/Win32
-/Win64
-/OSX32
-/__history
+# Written by newer IDEs when they open an older package
+*.otares
+
+# ---------------------------------------------------------------------------
+# Deliberately NOT ignored: *.dof and *.cfg below Source/Packages.
+# They carry the package search path and output directory. Without them
+# SynEdit.inc cannot find its SynEditJedi.inc and a fresh clone will not build.
+# The Delphi 7 IDE regenerates the .cfg from the .dof on every build, so seeing
+# it in a diff is expected, not a defect.
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# Dictionary of the spell check suite (15.9 MB binary blob, never changes and
+# is not needed to compile). It ships with the spell check distribution the
+# units came from.
+# ---------------------------------------------------------------------------
+Dictionary.7z
