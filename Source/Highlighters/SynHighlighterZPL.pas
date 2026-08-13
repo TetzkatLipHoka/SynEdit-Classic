@@ -190,13 +190,21 @@ begin
   Result := Ord(FTokenID);
 end;
 
+function WideUpCase(C: WideChar): WideChar;
+begin
+  if (C >= 'a') and (C <= 'z') then
+    Result := WideChar(Word(C) - 32)
+  else
+    Result := C;
+end;
+
 procedure TSynZPLSyn.KeyProc;
 var
   lcComment: boolean;
 begin
-  pvFieldData := (Run < Length(FLineStr)-1-2) and (FLine[Run] = '^') and (UpCase(FLine[Run+1]) = 'F') and (UpCase(FLine[Run+2]) = 'D');
-  pvGraphic := (Run < Length(FLineStr)-1-2) and (FLine[Run] = '~') and (UpCase(FLine[Run+1]) = 'D') and (UpCase(FLine[Run+2]) = 'G');
-  lcComment := (Run < Length(FLineStr)-1-2) and (FLine[Run] = '^') and (UpCase(FLine[Run+1]) = 'F') and (UpCase(FLine[Run+2]) = 'X');
+  pvFieldData := (Run < Length(FLineStr)-1-2) and (FLine[Run] = '^') and (WideUpCase(FLine[Run+1]) = 'F') and (WideUpCase(FLine[Run+2]) = 'D');
+  pvGraphic := (Run < Length(FLineStr)-1-2) and (FLine[Run] = '~') and (WideUpCase(FLine[Run+1]) = 'D') and (WideUpCase(FLine[Run+2]) = 'G');
+  lcComment := (Run < Length(FLineStr)-1-2) and (FLine[Run] = '^') and (WideUpCase(FLine[Run+1]) = 'F') and (WideUpCase(FLine[Run+2]) = 'X');
   if not lcComment then
   begin
   FTokenID := tkKey;
