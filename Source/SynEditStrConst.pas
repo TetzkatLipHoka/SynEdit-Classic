@@ -483,7 +483,7 @@ resourcestring
   SYNS_FilterHaskell            =  'Haskell Files (*.hs;*.lhs)|*.hs;*.lhs';
   SYNS_FilterHP48               =  'HP48 Files (*.s;*.sou;*.a;*.hp)|*.s;*.sou;*.a;*.hp';
   SYNS_FilterHTML               =  'HTML Documents (*.htm;*.html)|*.htm;*.html';
-  SYNS_FilterINI                =  'INI Files (*.ini)|*.ini';
+  SYNS_FilterINI                =  'INI/TOML Files (*.ini;*.toml)|*.ini;*.toml';
   SYNS_FilterInno               =  'Inno Setup Scripts (*.iss)|*.iss';
   SYNS_FilterJava               =  'Java Files (*.java)|*.java';
   SYNS_FilterJScript            =  'Javascript Files (*.js)|*.js';
