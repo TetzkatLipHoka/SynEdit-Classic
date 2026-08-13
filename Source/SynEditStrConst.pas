@@ -60,6 +60,7 @@ const
   SYNS_AttrAsm                  =  'Asm';
   SYNS_AttrAsmComment           =  'AsmComment';
   SYNS_AttrAsmKey               =  'AsmKey';
+  SYNS_AttrAnchor               =  'Anchor';
   SYNS_AttrAssembler            =  'Assembler';
   SYNS_AttrAtRules              =  'AtRules';
   SYNS_AttrAttribute            =  'Attribute';
@@ -85,6 +86,7 @@ const
   SYNS_AttrDir                  =  'Direction';
   SYNS_AttrDirections           =  'Directions';
   SYNS_AttrDirective            =  'Directive';
+  SYNS_AttrDocumentDelimiter    =  'DocumentDelimiter';
   SYNS_AttrDOCTYPESection       =  'DOCTYPE-Section';
   SYNS_AttrDocumentation        =  'Documentation';
   SYNS_AttrElementName          =  'ElementName';
@@ -123,6 +125,7 @@ const
   SYNS_AttrNamespaceAttrValue   =  'NamespaceAttributeValue';
   SYNS_AttrNonReservedKeyword   =  'NonreservedKeyword';
   SYNS_AttrNull                 =  'Null';
+  SYNS_AttrNumericValue         =  'NumericValue';
   SYNS_AttrNumber               =  'Number';
   SYNS_AttrOctal                =  'Octal';
   SYNS_AttrOperator             =  'Operator';
@@ -165,11 +168,13 @@ const
   SYNS_AttrSyntaxError          =  'SyntaxError';
   SYNS_AttrSystem               =  'SystemFunctionsAndVariables';
   SYNS_AttrSystemValue          =  'SystemValue';
+  SYNS_AttrTag                  =  'Tag';
   SYNS_AttrTagArea              =  'TagArea';
   SYNS_AttrTableName            =  'TableName';
   SYNS_AttrTerminator           =  'Terminator';
   SYNS_AttrTeXCommand           =  'TeX-Command';
   SYNS_AttrText                 =  'Text';
+  SYNS_AttrTextValue            =  'TextValue';
   SYNS_AttrTextMathMode         =  'TextInMathMode';
   SYNS_AttrThirdTri             =  'ThirdTri';
   SYNS_AttrTixKeyWords          =  'Tix-Keywords';
@@ -268,6 +273,7 @@ const
   SYNS_LangVrml97               =  'Vrml97';
   SYNS_LangX86Asm               =  'x86Assembly';
   SYNS_LangXML                  =  'XML';
+  SYNS_LangYAML                 =  'YAML';
 
 resourcestring
   SYNS_NoSearchEngineError      = 'No search engine has been assigned';
@@ -280,7 +286,11 @@ resourcestring
   SYNS_FriendlyAttrAsm                  =  'Asm';
   SYNS_FriendlyAttrAsmComment           =  'Asm Comment';
   SYNS_FriendlyAttrAsmKey               =  'Asm Key';
+  SYNS_FriendlyAttrAnchor               =  'Anchor';
   SYNS_FriendlyAttrAssembler            =  'Assembler';
+  SYNS_FriendlyAttrDocumentDelimiter    =  'Document Delimiter';
+  SYNS_FriendlyAttrNumericValue         =  'Numeric Value';
+  SYNS_FriendlyAttrTextValue            =  'Text Value';
   SYNS_FriendlyAttrAtRules              =  '@-Rules';
   SYNS_FriendlyAttrAttribute            =  'Attribute';
   SYNS_FriendlyAttrAttributeName        =  'Attribute Name';
@@ -385,6 +395,7 @@ resourcestring
   SYNS_FriendlyAttrSyntaxError          =  'Syntax Error';
   SYNS_FriendlyAttrSystem               =  'System Functions and Variables';
   SYNS_FriendlyAttrSystemValue          =  'System Value';
+  SYNS_FriendlyAttrTag                  =  'Tag';
   SYNS_FriendlyAttrTagArea              =  'Tag Area';
   SYNS_FriendlyAttrTableName            =  'Table Name';
   SYNS_FriendlyAttrTerminator           =  'Terminator';
@@ -504,6 +515,7 @@ resourcestring
   SYNS_FilterVrml97             =  'Vrml97/X3D World (*.wrl;*.wrml;*.vrl;*.vrml;*.x3d)|*.wrl;*.wrml;*.vrl;*.vrml;*.x3d';
   SYNS_FilterX86Assembly        =  'x86 Assembly Files (*.asm)|*.asm';
   SYNS_FilterXML                =  'XML Files (*.xml;*.xsd;*.xsl;*.xslt;*.dtd)|*.xml;*.xsd;*.xsl;*.xslt;*.dtd';
+  SYNS_FilterYAML               =  'YAML files (*.yaml;*.yml)|*.yaml;*.yml';
 
   // friendly language names
   SYNS_FriendlyLang68HC11               =  '68HC11 Assembler';
@@ -571,6 +583,7 @@ resourcestring
   SYNS_FriendlyLangVrml97               =  'Vrml97';
   SYNS_FriendlyLangX86Asm               =  'x86 Assembly';
   SYNS_FriendlyLangXML                  =  'XML';
+  SYNS_FriendlyLangYAML                 =  'YAML';
 
 implementation
 

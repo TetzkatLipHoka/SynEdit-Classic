@@ -69,6 +69,7 @@ uses
   SynEditOptionsDialog,
   SynHighlighterADSP21xx,
   SynHighlighterAsm,
+  SynHighlighterAsmX86_64,
   SynHighlighterAWK,
   SynHighlighterBaan,
   SynHighlighterBat,
@@ -127,6 +128,8 @@ uses
   SynHighlighterCPM, 
   SynHighlighterSDD,
   SynHighlighterXML,
+  SynHighlighterYAML,
+  SynHighlighterZPL,
   SynHighlighterMsg, 
   SynHighlighterIDL,
   SynHighlighterUnreal,
@@ -194,7 +197,7 @@ begin
     //database
     TSynCACSyn, TSynCacheSyn, TSynFoxproSyn, TSynSQLSyn, TSynSDDSyn,
     //assembler
-    TSynADSP21xxSyn, TSynAsmSyn, TSynHC11Syn, TSynHP48Syn, TSynSTSyn,
+    TSynADSP21xxSyn, TSynAsmSyn, TSynAsmX86_64, TSynHC11Syn, TSynHP48Syn, TSynSTSyn,
     {$ifdef SYN_DELPHI_2010_UP}
     TSynAsmMASMSyn,
     {$endif}
@@ -205,7 +208,8 @@ begin
     // other
     TSynBaanSyn, TSynGalaxySyn, TSynProgressSyn, TSynMsgSyn, 
     TSynIdlSyn, TSynUnrealSyn, TSynCPMSyn, TSynTeXSyn,
-    TSynHaskellSyn, TSynLDRSyn, TSynURISyn, TSynDOTSyn, TSynRCSyn
+    TSynHaskellSyn, TSynLDRSyn, TSynURISyn, TSynDOTSyn, TSynRCSyn,
+    TSynYAMLSyn, TSynZPLSyn
   ]);
 end;
 
