@@ -15,7 +15,7 @@ mwEdit component suite by Martin Waldenburg and other developers, the Initial
 Author of this file is Michael Hieke.
 Portions created by Michael Hieke are Copyright 2000 Michael Hieke.
 Portions created by James D. Jacobson are Copyright 1999 Martin Waldenburg.
-Unicode translation by Maël Hörz.
+Unicode translation by Maï¿½l Hï¿½rz.
 All Rights Reserved.
 
 Contributors to the SynEdit project are listed in the Contributors.txt file.
@@ -166,6 +166,9 @@ type
     { Copies the output buffer contents to the clipboard, as the native format
       or as text depending on the ExportAsText property. }
     procedure CopyToClipboard;
+    { Returns the output buffer contents as text, decoded according to the
+      Encoding property. }
+    function ExportedText: UnicodeString;
     { Exports everything in the strings parameter to the output buffer. }
     procedure ExportAll(ALines: TUnicodeStrings);
     { Exports the given range of the strings parameter to the output buffer. }
@@ -335,35 +338,35 @@ begin
   end;
 end;
 
-procedure TSynCustomExporter.CopyToClipboard;
+function TSynCustomExporter.ExportedText: UnicodeString;
 const
   Nulls: array[0..1] of Byte = (0, 0);
-var
-  S: UnicodeString;
+begin
+  FBuffer.Position := FBuffer.Size;
+  FBuffer.Write(Nulls, FCharSize);
+  case Encoding of
+    seUTF16LE:
+      Result := PWideChar(FBuffer.Memory);
+    seUTF16BE:
+      begin
+        Result := PWideChar(FBuffer.Memory);
+        StrSwapByteOrder(PWideChar(Result));
+      end;
+    seUTF8:
+{$IFDEF UNICODE}
+      Result := UTF8ToUnicodeString(PAnsiChar(FBuffer.Memory));
+{$ELSE}
+      Result := UTF8Decode(PAnsiChar(FBuffer.Memory));
+{$ENDIF}
+    seAnsi:
+      Result := UnicodeString(PAnsiChar(FBuffer.Memory));
+  end;
+end;
+
+procedure TSynCustomExporter.CopyToClipboard;
 begin
   if FExportAsText then
-  begin
-    FBuffer.Position := FBuffer.Size;
-    FBuffer.Write(Nulls, FCharSize);
-    case Encoding of
-      seUTF16LE:
-        S := PWideChar(FBuffer.Memory);
-      seUTF16BE:
-        begin
-          S := PWideChar(FBuffer.Memory);
-          StrSwapByteOrder(PWideChar(S));
-        end;
-      seUTF8:
-{$IFDEF UNICODE}
-        S := UTF8ToUnicodeString(PAnsiChar(FBuffer.Memory));
-{$ELSE}
-        S := UTF8Decode(PAnsiChar(FBuffer.Memory));
-{$ENDIF}
-      seAnsi:
-        S := UnicodeString(PAnsiChar(FBuffer.Memory));
-    end;
-    SetClipboardText(S);
-  end
+    SetClipboardText(ExportedText)
   else
     CopyToClipboardFormat(GetClipboardFormat);
 end;
