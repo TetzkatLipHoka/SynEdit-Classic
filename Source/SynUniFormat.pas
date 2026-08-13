@@ -38,32 +38,17 @@ implementation
 
 class function TSynUniFormat.VerifyStream(AStream: TStream): boolean;
 begin
-  Result := True;
-  if not Assigned(aStream) then
-  begin
-    Result := False;
-    raise Exception.Create(ClassName + '.ImportFromStream: AStream property can not be nil');
-  end;
+  Result := Assigned(AStream);
 end;
 
 class function TSynUniFormat.VerifyFileName(AFileName: string): boolean;
 begin
-  Result := True;
-  if not FileExists(AFileName) then
-  begin
-    Result := False;
-    raise Exception.Create(ClassName + '.ImportFromFile: File "' + AFileName + '" does not exists!');
-  end;
+  Result := FileExists(AFileName);
 end;
 
 class function TSynUniFormat.VerifyEmptyFileName(AFileName: string): boolean;
 begin
-  Result := True;
-  if AFileName = '' then
-  begin
-    Result := False;
-    raise Exception.Create(ClassName + '.ExportToFile: AFileName property can not be empty');
-  end;
+  Result := AFileName <> '';
 end;
 
 class function TSynUniFormat.ImportFromStream(AObject: TObject; AStream: TStream): boolean;

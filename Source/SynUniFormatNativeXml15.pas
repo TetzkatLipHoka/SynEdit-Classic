@@ -174,7 +174,7 @@ end;
 class function TSynUniFormatNativeXml15.ImportEditorProperties(AEditorProperties:
   TEditorProperties; ANode: IXMLNode): Boolean;
 begin
-  // формат не поддерживает
+  // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
   Result := True;
 end;
 
@@ -182,7 +182,7 @@ end;
 class function TSynUniFormatNativeXml15.ExportEditorProperties(AEditorProperties:
   TEditorProperties; ANode: IXMLNode): Boolean;
 begin
-  // формат не поддерживает
+  // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
   Result := True;
 end;
 
@@ -237,7 +237,7 @@ var
 begin
   with AKeyList, ANode do begin
     Name := VarToStr(GetVarAttr('Name',''));
-    ImportAttributes(AKeyList.Attributes, ChildNodes[0{%SchemeIndex}]); //TODO: Исправит?
+    ImportAttributes(AKeyList.Attributes, ChildNodes[0{%SchemeIndex}]); //TODO: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?
     //???Enabled := StrToBoolDef(EnsureChild('Enabled').Text, True);
     for i := 0 to ChildNodes.Count-1 do
       if ChildNodes[i].NodeName = 'W' then
@@ -250,7 +250,6 @@ class function TSynUniFormatNativeXml15.ExportKeyList(AKeyList: TSynKeyList; ANo
 var
   i: Integer;
   Buffer: TStringList;
-  Node: IXMLNode;
 begin
   with AKeyList, ANode do
   begin
@@ -271,7 +270,7 @@ class function TSynUniFormatNativeXml15.ImportSet(ASet: TSynSet; ANode: IXMLNode
 begin
   with ASet, ANode do begin
     Name := VarToStr(GetVarAttr('Name',''));
-    ImportAttributes(ASet.Attributes, ChildNodes[0{%SchemeIndex}]); //TODO: Исправит?
+    ImportAttributes(ASet.Attributes, ChildNodes[0{%SchemeIndex}]); //TODO: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?
     //???Enabled := StrToBoolDef(EnsureChild('Enabled').Text, True);
     CharSet := StrToSet(EnsureChild('S').Text);
   end;
@@ -320,9 +319,9 @@ var
 begin
   with ARange, ANode do begin
     Name := VarToStr(GetVarAttr('Name',''));
-    //TODO: Сделат?считывание Num ка?создание SynSet (если Num <> Def)
+    //TODO: пїЅпїЅпїЅпїЅпїЅпїЅ?пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Num пїЅпїЅ?пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ SynSet (пїЅпїЅпїЅпїЅ Num <> Def)
     ImportAttributes(ARange.Attributes, EnsureChild('Def'));
-    ImportAttributes(ARange.Attributes, ChildNodes[0{%SchemeIndex}]); //TODO: Исправит?
+    ImportAttributes(ARange.Attributes, ChildNodes[0{%SchemeIndex}]); //TODO: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?
     //???Enabled := StrToBoolDef(EnsureChild('Enabled').Text, True);
     OpenToken.Clear();
     CloseToken.Clear();
@@ -435,7 +434,6 @@ end;
 //----------------------------------------------------------------------------
 class function TSynUniFormatNativeXml15.ImportHighlighter(SynUniSyn: TSynUniSyn; ANode: IXMLNode): Boolean;
 var
-  Schemes: TStringList;
   SchemeIndex: integer;
 begin
   with ANode, SynUniSyn do begin
@@ -482,7 +480,9 @@ var
   Buffer: TStringlist;
   Stream: TMemoryStream;
 begin
-  VerifyStream(AStream);
+  Result := VerifyStream(AStream);
+  if not Result then
+    Exit;
 
   Buffer := TStringList.Create();
   Buffer.LoadFromStream(AStream);

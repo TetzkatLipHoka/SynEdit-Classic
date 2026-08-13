@@ -245,7 +245,9 @@ class function TSynUniFormatNativeXml.ImportFromStream(AObject: TObject; AStream
 var
   XMLDocument: IXMLDocument;
 begin
-  VerifyStream(AStream);
+  Result := VerifyStream(AStream);
+  if not Result then
+    Exit;
   AStream.Position := 0; // DW
 
   XMLDocument := CreateXmlDocument('');
@@ -287,7 +289,9 @@ class function TSynUniFormatNativeXml.ExportToStream(AObject: TObject; AStream: 
 var
   XmlDocument: IXmlDocument;
 begin
-  VerifyStream(AStream);
+  Result := VerifyStream(AStream);
+  if not Result then
+    Exit;
 
   if (AObject is TSynUniSyn) then begin
     XmlDocument := CreateXmlDocument('SynUniHighlighter');
@@ -331,7 +335,9 @@ class function TSynUniFormatNativeXml.ImportFromFile(AObject: TObject; AFileName
 var
   FileStream: TFileStream;
 begin
-  VerifyFileName(AFileName);
+  Result := VerifyFileName(AFileName);
+  if not Result then
+    Exit;
   FileStream := TFileStream.Create(AFileName, fmOpenRead or fmShareDenyWrite);
   try
     ImportFromStream(AObject, FileStream);
@@ -348,7 +354,9 @@ class function TSynUniFormatNativeXml.ExportToFile(AObject: TObject; AFileName: 
 var
   FileStream: TFileStream;
 begin
-  VerifyEmptyFileName(AFileName);
+  Result := VerifyEmptyFileName(AFileName);
+  if not Result then
+    Exit;
   FileStream := TFileStream.Create(AFileName, fmCreate or fmShareDenyWrite);
   try
     ExportToStream(AObject, FileStream);

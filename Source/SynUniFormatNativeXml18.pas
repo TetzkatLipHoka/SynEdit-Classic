@@ -440,10 +440,6 @@ end;
 
 //----------------------------------------------------------------------------
 class function TSynUniFormatNativeXml18.ImportHighlighter(SynUniSyn: TSynUniSyn; ANode: IXMLNode): Boolean;
-
-var
-  Schemes: TStringList;
-  SchemeIndex: Integer;
 begin
   with ANode, SynUniSyn do
   begin
@@ -477,7 +473,9 @@ var
   Buffer: TStringlist;
   Stream: TMemoryStream;
 begin
-  VerifyStream(AStream);
+  Result := VerifyStream(AStream);
+  if not Result then
+    Exit;
 
   Buffer := TStringList.Create();
   Buffer.LoadFromStream(AStream);

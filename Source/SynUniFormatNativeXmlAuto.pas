@@ -54,7 +54,9 @@ var
 const
   NumBytes = 32;
 begin
-  VerifyStream(AStream);
+  Result := VerifyStream(AStream);
+  if not Result then
+    Exit;
   
   SetLength(Buffer, NumBytes);
   AStream.Read(Buffer[1], NumBytes);
@@ -79,7 +81,9 @@ end;
 //----------------------------------------------------------------------------
 class function TSynUniFormatNativeXmlAuto.ExportToStream(AObject: TObject; AStream: TStream): Boolean;
 begin
-  VerifyStream(AStream);
+  Result := VerifyStream(AStream);
+  if not Result then
+    Exit;
   if (AObject is TSynUniSyn) then begin
     if TSynUniSyn(AObject).FormatVersion = '1.5' then
       TSynUniFormatNativeXml15.ExportToStream(AObject, AStream)
@@ -97,7 +101,9 @@ class function TSynUniFormatNativeXmlAuto.ImportFromFile(AObject: TObject; AFile
 var
   FileStream: TFileStream;
 begin
-  VerifyFileName(AFileName);  
+  Result := VerifyFileName(AFileName);
+  if not Result then
+    Exit;
   FileStream := TFileStream.Create(AFileName, fmOpenRead or fmShareDenyWrite);
   try
     ImportFromStream(AObject, FileStream);
@@ -114,7 +120,9 @@ class function TSynUniFormatNativeXmlAuto.ExportToFile(AObject: TObject; AFileNa
 var
   FileStream: TFileStream;
 begin
-  VerifyEmptyFileName(AFileName);
+  Result := VerifyEmptyFileName(AFileName);
+  if not Result then
+    Exit;
   FileStream := TFileStream.Create(AFileName, fmCreate or fmShareDenyWrite);
   try
     ExportToStream(AObject, FileStream);
