@@ -77,7 +77,9 @@ runtime package first. Verified with dcc32 15.0 (Delphi 7) and 20.0
 > **Provenance:** these suites come from earlier public SynEdit distributions and
 > were taken over unchanged — the original authors' copyright notices are left
 > untouched in the file headers (among them TSynSpellCheck 1.50 by Jacob Dybala).
-> The only original work in this repository is `SynHighlighterAsmX86_64`.
+> The only original work in this repository is `SynHighlighterAsmX86_64`, and it
+> is released under the same terms as the rest of the project: MPL 1.1 with the
+> GPL 2 or later alternative, exactly like every other SynEdit unit.
 >
 > The dictionary used by the spell check suite (`Dictionary.7z`, 15.9 MB) is
 > **not** part of this repository: it never changes, is not needed to compile,
