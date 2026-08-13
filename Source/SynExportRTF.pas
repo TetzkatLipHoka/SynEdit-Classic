@@ -15,7 +15,7 @@ mwEdit component suite by Martin Waldenburg and other developers, the Initial
 Author of this file is Michael Hieke.
 Portions created by Michael Hieke are Copyright 2000 Michael Hieke.
 Portions created by James D. Jacobson are Copyright 1999 Martin Waldenburg.
-Unicode translation by Maël Hörz.
+Unicode translation by Maï¿½l Hï¿½rz.
 All Rights Reserved.
 
 Contributors to the SynEdit project are listed in the Contributors.txt file.
@@ -163,7 +163,8 @@ begin
   // background color
   if BackgroundChanged then
   begin
-    AddData(Format('\cb%d', [GetColorIndex(fLastBG)]));
+    // Word ignores \cb on its own - write \chcbpat as well
+    AddData(Format('\chcbpat%d\cb%d', [GetColorIndex(fLastBG), GetColorIndex(fLastBG)]));
     fAttributesChanged := True;
   end;
   // text color
