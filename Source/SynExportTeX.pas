@@ -14,7 +14,7 @@ The Original Code is partly based on the mwHTMLExport.pas file from the
 mwEdit component suite by Martin Waldenburg and other developers, the Initial
 Author of this file is Ascher Stefan.
 Portions created by Ascher Stefan are Copyright 2002 Ascher Stefan.
-Unicode translation by Maël Hörz.
+Unicode translation by Maï¿½l Hï¿½rz.
 All Rights Reserved.
 
 Contributors to the SynEdit project are listed in the Contributors.txt file.
@@ -128,18 +128,20 @@ uses
 // This is necessary because LaTeX expects a dot, but VCL's Format is
 // language-dependent, i.e. with another locale set, the separator can be
 // different (for example a comma).
+// Own settings instead of bending the global ones: the previous approach was
+// neither thread safe nor exception safe - if Format raised, the decimal
+// separator was left at '.' process wide.
 function DotDecSepFormat(const Format: string; const Args: array of const): string;
 var
-{$IFDEF UNICODE}
-  OldDecimalSeparator: WideChar;
-{$ELSE}
-  OldDecimalSeparator: AnsiChar;
-{$ENDIF}
+  Settings: TFormatSettings;
 begin
-  OldDecimalSeparator := {$IFDEF SYN_COMPILER_15_UP}FormatSettings.{$ENDIF}DecimalSeparator;
-  {$IFDEF SYN_COMPILER_15_UP}FormatSettings.{$ENDIF}DecimalSeparator := '.';
-  Result := SysUtils.Format(Format, Args);
-  {$IFDEF SYN_COMPILER_15_UP}FormatSettings.{$ENDIF}DecimalSeparator := OldDecimalSeparator;
+{$IFDEF SYN_COMPILER_15_UP}
+  Settings := FormatSettings;
+{$ELSE}
+  GetLocaleFormatSettings(GetThreadLocale, Settings);
+{$ENDIF}
+  Settings.DecimalSeparator := '.';
+  Result := SysUtils.Format(Format, Args, Settings);
 end;
 
 function ColorToTeX(AColor: TColor): string;
