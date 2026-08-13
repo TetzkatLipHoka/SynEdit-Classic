@@ -51,12 +51,16 @@ uses
   SynEditTypes,
   SynEditHighlighter,
   SysUtils,
-  Classes,
+  SynUnicode,
+  Classes
 {$IFDEF SYN_CodeFolding}
-  SynEditCodeFolding,
-  SynRegExpr,
+  ,SynEditCodeFolding
+  ,SynRegExpr
 {$ENDIF}
-  Character;
+{$IFDEF UNICODE}
+  ,Character
+{$ENDIF}
+  ;
 
 type
   TtkTokenKind = (tkAsm, tkComment, tkIdentifier, tkKey, tkNull, tkNumber,
@@ -83,7 +87,7 @@ type
   private
     FAsmStart: Boolean;
     FRange: TRangeState;
-    FCommentClose: Char;
+    FCommentClose: WideChar;
     FIdentFuncTable: array[0..388] of TIdentFuncTableFunc;
     FKeywords: TAnsiStringList;
     FKeywordsUnitScoped: TAnsiStringList;
@@ -212,7 +216,7 @@ uses
 
 const
    // if the language is case-insensitive keywords *must* be in lowercase
-   cKeywords: array[1..94] of UnicodeString = (
+   cKeywords: array[1..95] of UnicodeString = (
       'abstract', 'and', 'array', 'as', 'asm',
       'begin', 'break', 'case', 'cdecl', 'class', 'const', 'constructor',
       'continue', 'deprecated', 'destructor',
@@ -226,7 +230,7 @@ const
       'procedure', 'program', 'property', 'protected', 'public', 'published', 
       'raise', 'record', 'register', 'reintroduce', 'repeat', 'require', 
       'resourcestring', 'sar', 'sealed', 'set', 'shl', 'shr', 'static', 
-      'strict', 'then', 'to', 'try', 'type', 'unit', 'until', 'uses', 'var', 
+      'step', 'strict', 'then', 'to', 'try', 'type', 'unit', 'until', 'uses', 'var',
       'virtual', 'while', 'xor'
   );
   cKeywordsUnitScoped: array [0..0] of UnicodeString = (
@@ -770,7 +774,7 @@ begin
   else
     FTokenID := tkComment;
     repeat
-      if (FLine[Run] = '*') and (FLine[Run + 1] = FCommentClose) then begin
+      if (Char(FLine[Run]) = '*') and (FLine[Run + 1] = FCommentClose) then begin
         Inc(Run, 2);
         if FRange in [rsAsmCommentC] then
           FRange := rsAsm
@@ -972,7 +976,15 @@ begin
           end;
        end;
        #$0080..#$FFFF :
-          if {$IFDEF SYN_COMPILER_18_UP}Char(FLine[Run]).IsLetterOrDigit{$ELSE}TCharacter.IsLetterOrDigit(FLine[Run]){$ENDIF} then
+          if {$IFDEF SYN_COMPILER_18_UP}
+             Char(FLine[Run]).IsLetterOrDigit
+             {$ELSE}
+               {$IFDEF UNICODE}
+               TCharacter.IsLetterOrDigit(FLine[Run])
+               {$ELSE}
+               ( Char(FLine[Run]) in [ DecimalSeparator, '-', 'a'..'z', 'A'..'Z', '0'..'9', ' ' ] )
+               {$ENDIF}
+             {$ENDIF} then
              IdentProc
           else UnknownProc;
     else
@@ -1332,7 +1344,13 @@ begin
     Result := True;
     for i := 1 to FStringLen do
     begin
-      if (temp^ <> Token[i]) and ((temp^>'z') or (UpCase(temp^) <> UpCase(Token[i]))) then
+      if (temp^ <> Token[i]) and (( Char(temp^) > 'z' ) or
+      {$IFDEF UNICODE}
+      (UpCase(temp^) <> UpCase(Token[i])))
+      {$ELSE}
+      (UpCase(Char(temp^)) <> UpCase(Char(Token[i]))))
+      {$ENDIF}
+      then
       begin
         Result := False;
         Break;
@@ -1351,7 +1369,15 @@ begin
   if Ord(AChar) <= $7F then
     Result := AnsiChar(AChar) in ['_', '0'..'9', 'A'..'Z', 'a'..'z']
   else
-    Result := {$IFDEF SYN_COMPILER_18_UP}AChar.IsLetterOrDigit{$ELSE}TCharacter.IsLetterOrDigit(AChar){$ENDIF};
+    Result := {$IFDEF SYN_COMPILER_18_UP}
+              AChar.IsLetterOrDigit
+              {$ELSE}
+                {$IFDEF UNICODE}
+                TCharacter.IsLetterOrDigit(AChar)
+                {$ELSE}
+                ( Char(AChar) in [ DecimalSeparator, '-', 'a'..'z', 'A'..'Z', '0'..'9', ' ' ] )
+                {$ENDIF}
+              {$ENDIF};
 end;
 
 class function TSynDWSSyn.GetFriendlyLanguageName: UnicodeString;

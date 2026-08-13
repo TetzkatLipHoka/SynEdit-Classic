@@ -60,8 +60,7 @@ uses
   SynHighlighterHashEntries,
   SynUnicode,
   SysUtils,
-  IOUtils,
-  SynMemo,
+  {$IF CompilerVersion >= 30}IOUtils,{$IFEND}
   Classes;
 
 type
@@ -413,6 +412,10 @@ begin
 end;
 
 constructor TSynAsmMASMSyn.Create(AOwner: TComponent);
+{$IF CompilerVersion < 30}
+var 
+  StrL : TStringList;
+{$IFEND}
 begin
   inherited Create(AOwner);
 
@@ -478,7 +481,16 @@ begin
   EnumerateKeywords(Ord(tkRegister), Registers, IsIdentChar, DoAddRegisterKeyword);
 
   if FileExists('WinAPIInsertList.txt') then
+    {$IF CompilerVersion >= 30}
     FApis := TFile.ReadAllText('WinAPIInsertList.txt');
+    {$ELSE}
+    begin
+    StrL := TStringList.Create;
+    StrL.LoadFromFile( 'WinAPIInsertList.txt' );
+    FApis := StrL.Text;
+    StrL.free;
+    end;   
+    {$IFEND}
   EnumerateKeywords(Ord(tkApi), FApis, IsIdentChar, DoAddApiKeyword);
 
   EnumerateKeywords(Ord(tkOperator), Operators, IsIdentChar, DoAddOperatorKeyword);
