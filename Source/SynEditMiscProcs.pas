@@ -12,7 +12,7 @@ The Original Code is: SynEditMiscProcs.pas, released 2000-04-07.
 The Original Code is based on the mwSupportProcs.pas file from the
 mwEdit component suite by Martin Waldenburg and other developers, the Initial
 Author of this file is Michael Hieke.
-Unicode translation by Maël Hörz.
+Unicode translation by Maï¿½l Hï¿½rz.
 All Rights Reserved.
 
 Contributors to the SynEdit and mwEdit projects are listed in the
@@ -1015,7 +1015,7 @@ begin
       end
       else
 {$ENDIF}
-      if p^ in AChars then
+      if {$IF CompilerVersion >= 20}CharInSet( p^,{$ELSE}( p^ in{$IFEND} AChars ) then
       begin
         Result := Start;
         exit;
@@ -1038,7 +1038,7 @@ begin
     if not SysLocale.FarEast then begin
 {$ENDIF}
       for I := Start downto 1 do
-        if Line[I] in AChars then begin
+        if {$IF CompilerVersion >= 20}CharInSet( Line[I],{$ELSE}( Line[I] in{$IFEND} AChars ) then begin
           Result := I;
           Exit;
         end;
