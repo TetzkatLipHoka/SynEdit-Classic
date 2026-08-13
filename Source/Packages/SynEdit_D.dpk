@@ -1,0 +1,67 @@
+package SynEdit_D;
+
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS OFF}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'SynEdit component suite'}
+{$IFDEF UNICODE}
+{$LIBSUFFIX '2009'}
+{$ELSE}
+{$LIBSUFFIX '70'}
+{$ENDIF}
+{$DESIGNONLY}
+{$IMPLICITBUILD ON}
+{$DEFINE madExcept}
+{.$DEFINE SYN_DELPHI_PE}
+{.$DEFINE SYN_CLX}
+{.$DEFINE USE_TNT_DESIGNTIME_SUPPORT}
+
+//{$R *.res}
+{$R '..\SynEditReg.dcr'}
+{$IFNDEF UNICODE}
+{$R '..\SynUniReg.dcr'}
+{$R '..\SynSpellCheck.dcr'}
+{$ENDIF UNICODE}
+
+requires
+  {$IFDEF SYN_CLX}
+  visualclx,
+  visualdbclx, 
+  {$ENDIF SYN_CLX}
+  {$IFDEF USE_TNT_DESIGNTIME_SUPPORT}
+  TntUnicodeVcl_D,
+  TntUnicodeVcl_R,  
+  {$ENDIF USE_TNT_DESIGNTIME_SUPPORT}
+  DesignIDE,
+  SynEdit_R;
+
+contains
+  SynEditReg in '..\SynEditReg.pas',
+  SynEditPropertyReg in '..\SynEditPropertyReg.pas',
+  {$IFNDEF UNICODE}
+  SynUniReg in '..\SynUniReg.pas',
+  SynSpellReg in '..\SynSpellReg.pas',   // depends on SynSpellCheck (not Unicode clean)
+  {$ENDIF UNICODE}
+  SynHighlighterManager in '..\Highlighters\SynHighlighterManager.pas';
+
+end.

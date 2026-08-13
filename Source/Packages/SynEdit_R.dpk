@@ -1,0 +1,195 @@
+package SynEdit_R;
+
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'SynEdit component suite runtime'}
+{$IFDEF UNICODE}
+{$LIBSUFFIX '2009'}
+{$ELSE}
+{$LIBSUFFIX '70'}
+{$ENDIF}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+{$DEFINE madExcept}
+
+requires
+  vcl,
+  vcldb,
+  vclx,
+  {$IFNDEF UNICODE}      // CLX exists up to Delphi 7 only
+  visualclx,
+  {$ENDIF UNICODE}
+  rtl;
+
+contains
+  SynTextDrawer in '..\SynTextDrawer.pas',
+  SynAutoCorrect in '..\SynAutoCorrect.pas',
+  SynAutoCorrectEditor in '..\SynAutoCorrectEditor.pas' {frmAutoCorrectEditor},
+  SynCompletionProposal in '..\SynCompletionProposal.pas',
+  SynDBEdit in '..\SynDBEdit.pas',
+  SynEdit in '..\SynEdit.pas',
+  SynEditAutoComplete in '..\SynEditAutoComplete.pas',
+  {$IF CompilerVersion >= 22} // XE
+  SynEditCodeFolding in '..\SynEditCodeFolding.pas',
+  {$IFEND}
+  SynEditDocumentManager in '..\SynEditDocumentManager.pas',
+  SynEditExport in '..\SynEditExport.pas',
+  SynEditHighlighter in '..\Highlighters\SynEditHighlighter.pas',
+  SynEditKbdHandler in '..\SynEditKbdHandler.pas',
+  SynEditKeyCmdEditor in '..\SynEditKeyCmdEditor.pas' {SynEditKeystrokeEditorForm},
+  SynEditKeyCmds in '..\SynEditKeyCmds.pas',
+  SynEditKeyCmdsEditor in '..\SynEditKeyCmdsEditor.pas' {SynEditKeystrokesEditorForm},
+  SynEditKeyConst in '..\SynEditKeyConst.pas',
+  SynEditMiscClasses in '..\SynEditMiscClasses.pas',
+  SynEditMiscProcs in '..\SynEditMiscProcs.pas',
+  SynEditOptionsDialog in '..\SynEditOptionsDialog.pas' {fmEditorOptionsDialog},
+  SynEditPlugins in '..\SynEditPlugins.pas',
+  SynEditWordWrap in '..\SynEditWordWrap.pas',
+  SynEditPrint in '..\SynEditPrint.pas',
+  SynEditPrinterInfo in '..\SynEditPrinterInfo.pas',
+  SynEditPrintHeaderFooter in '..\SynEditPrintHeaderFooter.pas',
+  SynEditPrintMargins in '..\SynEditPrintMargins.pas',
+  SynEditPrintMarginsDialog in '..\SynEditPrintMarginsDialog.pas' {SynEditPrintMarginsDlg},
+  SynEditPrintPreview in '..\SynEditPrintPreview.pas',
+  SynEditPrintTypes in '..\SynEditPrintTypes.pas',
+  SynEditPythonBehaviour in '..\SynEditPythonBehaviour.pas',
+  SynEditRegexSearch in '..\SynEditRegexSearch.pas',
+  SynEditSearch in '..\SynEditSearch.pas',
+  SynEditStrConst in '..\SynEditStrConst.pas',
+  SynEditTextBuffer in '..\SynEditTextBuffer.pas',
+  SynEditTypes in '..\SynEditTypes.pas',
+  SynExportHTML in '..\SynExportHTML.pas',
+  SynExportRTF in '..\SynExportRTF.pas',
+  SynExportTeX in '..\SynExportTeX.pas',
+  SynHighlighterADSP21xx in '..\Highlighters\SynHighlighterADSP21xx.pas',
+  SynHighlighterAsm in '..\Highlighters\SynHighlighterAsm.pas',
+  SynHighlighterAsmMASM in '..\Highlighters\SynHighlighterAsmMASM.pas',
+  SynHighlighterAsmX86_64 in '..\Highlighters\SynHighlighterAsmX86_64.pas',
+  SynHighlighterAWK in '..\Highlighters\SynHighlighterAWK.pas',
+  SynHighlighterBaan in '..\Highlighters\SynHighlighterBaan.pas',
+  SynHighlighterBat in '..\Highlighters\SynHighlighterBat.pas',
+  SynHighlighterCAC in '..\Highlighters\SynHighlighterCAC.pas',
+  SynHighlighterCache in '..\Highlighters\SynHighlighterCache.pas',
+  SynHighlighterCobol in '..\Highlighters\SynHighlighterCobol.pas',
+  SynHighlighterCPM in '..\Highlighters\SynHighlighterCPM.pas',
+  SynHighlighterCpp in '..\Highlighters\SynHighlighterCpp.pas',
+  SynHighlighterCS in '..\Highlighters\SynHighlighterCS.pas',
+  SynHighlighterDfm in '..\Highlighters\SynHighlighterDfm.pas',
+  SynHighlighterDml in '..\Highlighters\SynHighlighterDml.pas',
+  SynHighlighterECMAScript in '..\Highlighters\SynHighlighterECMAScript.pas',
+  SynHighlighterFortran in '..\Highlighters\SynHighlighterFortran.pas',
+  SynHighlighterFoxpro in '..\Highlighters\SynHighlighterFoxpro.pas',
+  SynHighlighterGalaxy in '..\Highlighters\SynHighlighterGalaxy.pas',
+  SynHighlighterGeneral in '..\Highlighters\SynHighlighterGeneral.pas',
+  SynHighlighterGLSL in '..\Highlighters\SynHighlighterGLSL.pas',
+  SynHighlighterGo in '..\Highlighters\SynHighlighterGo.pas',
+  SynHighlighterGWS in '..\Highlighters\SynHighlighterGWS.pas',
+  SynHighlighterHashEntries in '..\Highlighters\SynHighlighterHashEntries.pas',
+  SynHighlighterHaskell in '..\Highlighters\SynHighlighterHaskell.pas',
+  SynHighlighterHC11 in '..\Highlighters\SynHighlighterHC11.pas',
+  SynHighlighterHP48 in '..\Highlighters\SynHighlighterHP48.pas',
+  SynHighlighterHtml in '..\Highlighters\SynHighlighterHtml.pas',
+  SynHighlighterIDL in '..\Highlighters\SynHighlighterIDL.pas',
+  SynHighlighterIni in '..\Highlighters\SynHighlighterIni.pas',
+  SynHighlighterInno in '..\Highlighters\SynHighlighterInno.pas',
+  SynHighlighterJava in '..\Highlighters\SynHighlighterJava.pas',
+  SynHighlighterJScript in '..\Highlighters\SynHighlighterJScript.pas',
+  SynHighlighterJSON in '..\Highlighters\SynHighlighterJSON.pas',
+  SynHighlighterKix in '..\Highlighters\SynHighlighterKix.pas',
+  SynHighlighterM3 in '..\Highlighters\SynHighlighterM3.pas',
+  SynHighlighterModelica in '..\Highlighters\SynHighlighterModelica.pas',
+  SynHighlighterMsg in '..\Highlighters\SynHighlighterMsg.pas',
+  SynHighlighterMulti in '..\Highlighters\SynHighlighterMulti.pas',
+  SynHighlighterPas in '..\Highlighters\SynHighlighterPas.pas',
+  SynHighlighterPerl in '..\Highlighters\SynHighlighterPerl.pas',
+  SynHighlighterPHP in '..\Highlighters\SynHighlighterPHP.pas',
+  SynHighlighterProgress in '..\Highlighters\SynHighlighterProgress.pas',
+  SynHighlighterPython in '..\Highlighters\SynHighlighterPython.pas',
+  SynHighlighterRC in '..\Highlighters\SynHighlighterRC.pas',
+  SynHighlighterRuby in '..\Highlighters\SynHighlighterRuby.pas',
+  SynHighlighterSDD in '..\Highlighters\SynHighlighterSDD.pas',
+  SynHighlighterSml in '..\Highlighters\SynHighlighterSml.pas',
+  SynHighlighterSQL in '..\Highlighters\SynHighlighterSQL.pas',
+  SynHighlighterST in '..\Highlighters\SynHighlighterST.pas',
+  SynHighlighterTclTk in '..\Highlighters\SynHighlighterTclTk.pas',
+  SynHighlighterTeX in '..\Highlighters\SynHighlighterTeX.pas',
+  SynHighlighterUNIXShellScript in '..\Highlighters\SynHighlighterUNIXShellScript.pas',
+  SynHighlighterUnreal in '..\Highlighters\SynHighlighterUnreal.pas',
+  SynHighlighterVB in '..\Highlighters\SynHighlighterVB.pas',
+  SynHighlighterVBScript in '..\Highlighters\SynHighlighterVBScript.pas',
+  SynHighlighterXML in '..\Highlighters\SynHighlighterXML.pas',
+  SynHighlighterYAML in '..\Highlighters\SynHighlighterYAML.pas',
+  SynHighlighterZPL in '..\Highlighters\SynHighlighterZPL.pas',
+  SynMacroRecorder in '..\SynMacroRecorder.pas',
+  SynMemo in '..\SynMemo.pas',
+  SynRegExpr in '..\SynRegExpr.pas',
+  SynHighlighterCss in '..\Highlighters\SynHighlighterCss.pas',
+  SynHighlighterLDraw in '..\Highlighters\SynHighlighterLDraw.pas',
+  SynHighlighterURI in '..\Highlighters\SynHighlighterURI.pas',
+  SynURIOpener in '..\SynURIOpener.pas',
+  SynHighlighterDOT in '..\Highlighters\SynHighlighterDOT.pas',
+  SynHighlighterDWS in '..\Highlighters\SynHighlighterDWS.pas',
+  SynHighlighterVrml97 in '..\Highlighters\SynHighlighterVrml97.pas',
+  SynHighlighterEiffel in '..\Highlighters\SynHighlighterEiffel.pas',
+  SynUnicode in '..\SynUnicode.pas' {$IFNDEF CPUX64},
+  SynUsp10 in '..\SynUsp10.pas' {$ENDIF},
+  SynEditHighlighterOptions in '..\Highlighters\SynEditHighlighterOptions.pas',
+  SynEditWildcardSearch in '..\SynEditWildcardSearch.pas',
+  SynHighlighterLLVM in '..\Highlighters\SynHighlighterLLVM.pas',
+  SynHighlighterRexx in '..\Highlighters\SynHighlighterRexx.pas',
+
+  {$IFNDEF UNICODE}
+  SimpleXML in '..\SimpleXML.pas',
+  SimpleXML_D5Emulate in '..\SimpleXML_D5Emulate.pas',
+  SynUniClasses in '..\SynUniClasses.pas',
+  SynUniColorBox in '..\SynUniColorBox.pas',
+  SynUniColorBoxDataModule in '..\SynUniColorBoxDataModule.pas',
+  SynUniDesigner in '..\SynUniDesigner.pas',
+  SynUniDesignerForm in '..\SynUniDesignerForm.pas' {fmDesigner},
+  SynUniDesignerOldTranslator in '..\SynUniDesignerOldTranslator.pas',
+  SynUniDesignerTranslator in '..\SynUniDesignerTranslator.pas',
+  SynUniFormat in '..\SynUniFormat.pas',
+  SynUniFormatEditPlus in '..\SynUniFormatEditPlus.pas',
+  SynUniFormatNativeXml15 in '..\SynUniFormatNativeXml15.pas',
+  SynUniFormatNativeXml18 in '..\SynUniFormatNativeXml18.pas',
+  SynUniFormatNativeXml20 in '..\SynUniFormatNativeXml20.pas',
+  SynUniFormatNativeXml in '..\SynUniFormatNativeXml.pas',
+  SynUniFormatNativeXmlAuto in '..\SynUniFormatNativeXmlAuto.pas',
+  SynUniFormatUltraEdit in '..\SynUniFormatUltraEdit.pas',
+  SynUniHighlighter in '..\Highlighters\SynUniHighlighter.pas',
+  SynUniRules in '..\SynUniRules.pas',
+
+  // SynSpellCheck is not Unicode clean (AnsiChar/Char, see SynSpellCheck.pas
+  // lines 1020 and 1610), so it stays in the non-Unicode branch as well.
+  SynSpellCheck in '..\SynSpellCheck.pas',
+  SynSpellCheckMetaphone in '..\SynSpellCheckMetaphone.pas',
+  SynSpellCheckDlg in '..\SynSpellCheckDlg.pas' {CheckWordDlg},
+  SynSpellCheckOpDlg in '..\SynSpellCheckOpDlg.pas' {SpellCheckOpForm},
+  {$ENDIF UNICODE}
+
+  // deliberately last: terminates the contains list in BOTH branches
+  SynHighlighterWebIDL in '..\Highlighters\SynHighlighterWebIDL.pas';
+  
+end.
