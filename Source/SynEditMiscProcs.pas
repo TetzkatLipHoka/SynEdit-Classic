@@ -161,6 +161,13 @@ procedure SynDrawGradient(const ACanvas: TCanvas; const AStartColor,
 
 function DeleteTypePrefixAndSynSuffix(S: string): string;
 
+function ExpandPath(Path : string): string;
+
+function StrScanForCharInSet(const Line: string; Start: integer; AChars: TSynIdentChars): integer;
+
+function StrRScanForCharInSet(const Line: string; Start: integer; AChars: TSynIdentChars): integer;
+
+
 implementation
 
 uses
@@ -957,6 +964,99 @@ begin
 
       ACanvas.FillRect(PaintRect);
     end;
+  end;
+end;
+
+function ExpandPath(Path : string): string;
+var
+  dir : string;
+begin
+  result := Path;
+  dir := ExtractFilePath(ParamStr(0));
+  if ((Length(result) > 1) and (result[2] <> ':')) or (Length(result) =1)  then
+  begin
+    if (result[1] = '\')  then
+      System.Delete(result, 1, 1);
+    result := dir + result;
+  end;
+  if (Length(result)>0) and (result[Length(result)] <> '\') then
+    result := result + '\';
+end;
+
+function StrScanForCharInSet(const Line: string; Start: integer;
+  AChars: TSynIdentChars): integer;
+var
+  p: PChar;
+begin
+  if (Start > 0) and (Start <= Length(Line)) then
+  begin
+{$IFDEF SYN_MBCSSUPPORT}
+    // don't start on a trail byte
+    if ByteType(Line, Start) = mbTrailByte then
+    begin
+      Inc(Start);
+      if Start > Length(Line) then
+      begin
+        Result := 0;
+        Exit;
+      end;
+    end;
+{$ENDIF}
+    p := PChar(@Line[Start]);
+    repeat
+{$IFDEF SYN_MBCSSUPPORT}
+      // skip over multibyte characters
+      if p^ in LeadBytes then
+      begin
+        Inc(p);
+        Inc(Start);
+        if p^ = #0 then
+          Break;
+      end
+      else
+{$ENDIF}
+      if p^ in AChars then
+      begin
+        Result := Start;
+        exit;
+      end;
+      Inc(p);
+      Inc(Start);
+    until p^ = #0;
+  end;
+  Result := 0;
+end;
+
+function StrRScanForCharInSet(const Line: string; Start: integer;
+  AChars: TSynIdentChars): integer;
+var
+  I: Integer;
+begin
+  Result := 0;
+  if (Start > 0) and (Start <= Length(Line)) then begin
+{$IFDEF SYN_MBCSSUPPORT}
+    if not SysLocale.FarEast then begin
+{$ENDIF}
+      for I := Start downto 1 do
+        if Line[I] in AChars then begin
+          Result := I;
+          Exit;
+        end;
+{$IFDEF SYN_MBCSSUPPORT}
+    end
+    else begin
+      // it's a lot faster to start from the beginning and go forward than to go
+      // backward and call ByteType on every character
+      I := 1;
+      while I <= Start do begin
+        if Line[I] in LeadBytes then
+          Inc(I)
+        else if Line[I] in AChars then
+          Result := I;
+        Inc(I);
+      end;
+    end;
+{$ENDIF}
   end;
 end;
 

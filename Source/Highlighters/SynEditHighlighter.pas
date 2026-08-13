@@ -1,4 +1,4 @@
-ï»¿{-------------------------------------------------------------------------------
+{-------------------------------------------------------------------------------
 The contents of this file are subject to the Mozilla Public License
 Version 1.1 (the "License"); you may not use this file except in compliance
 with the License. You may obtain a copy of the License at
@@ -12,7 +12,7 @@ The Original Code is: SynEditHighlighter.pas, released 2000-04-07.
 The Original Code is based on mwHighlighter.pas by Martin Waldenburg, part of
 the mwEdit component suite.
 Portions created by Martin Waldenburg are Copyright (C) 1998 Martin Waldenburg.
-Unicode translation by MaÃ«l HÃ¶rz.
+Unicode translation by Maël Hörz.
 Options property added by CodehunterWorks
 All Rights Reserved.
 
@@ -56,7 +56,6 @@ type
     FForeground: TColor;
     FForegroundDefault: TColor;
     FFriendlyName: UnicodeString;
-    FName: string;
     FStyle: TFontStyles;
     FStyleDefault: TFontStyles;
     FOnChange: TNotifyEvent;
@@ -69,6 +68,8 @@ type
     procedure SetStyle(Value: TFontStyles);
     function GetStyleFromInt: Integer;
     procedure SetStyleFromInt(const Value: Integer);
+  protected
+    FName: string;
   public
     procedure Assign(Source: TPersistent); override;
     procedure AssignColorAndStyle(Source: TSynHighlighterAttributes);
@@ -116,7 +117,6 @@ const
 type
   TSynCustomHighlighter = class(TComponent)
   private
-    FAttributes: TStringList;
     FAttrChangeHooks: TSynNotifyEventChain;
     FUpdateCount: Integer;
     FEnabled: Boolean;
@@ -129,6 +129,7 @@ type
     procedure SetAdditionalIdentChars(const Value: TSysCharSet);
     procedure SetAdditionalWordBreakChars(const Value: TSysCharSet);
   protected
+    FAttributes: TStringList;
     FCasedLine: PWideChar;
     FCasedLineStr: UnicodeString;
     FCaseSensitive: Boolean;
@@ -169,7 +170,7 @@ type
   protected
     function GetCapabilitiesProp: TSynHighlighterCapabilities;
     function GetFriendlyLanguageNameProp: UnicodeString;
-    function GetLanguageNameProp: string;
+    function GetLanguageNameProp: string; virtual;
   public
     class function GetCapabilities: TSynHighlighterCapabilities; virtual;
     class function GetFriendlyLanguageName: UnicodeString; virtual;
@@ -203,8 +204,8 @@ type
 
     function LoadFromRegistry(RootKey: HKEY; Key: string): Boolean; virtual;
     function SaveToRegistry(RootKey: HKEY; Key: string): Boolean; virtual;
-    function LoadFromFile(AFileName: string): Boolean;
-    function SaveToFile(AFileName: string): Boolean;
+    function LoadFromFile(AFileName: string): Boolean; virtual;
+    function SaveToFile(AFileName: string): Boolean; virtual;
 
     procedure HookAttrChangeEvent(ANotifyEvent: TNotifyEvent);
     procedure UnhookAttrChangeEvent(ANotifyEvent: TNotifyEvent);

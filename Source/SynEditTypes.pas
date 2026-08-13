@@ -102,6 +102,8 @@ type
     class operator Equal(a, b: TDisplayCoord): Boolean;
     {$ENDIF}
   end;
+  
+  TSynIdentChars = set of AnsiChar;
 
 function DisplayCoord(AColumn, ARow: Integer): TDisplayCoord;
 function BufferCoord(AChar, ALine: Integer): TBufferCoord;
