@@ -31,7 +31,12 @@ plain Delphi installation is all that is needed.
 |---|---|
 | `Packages\D7` | `SynEdit_R7.dpk` / `SynEdit_D7.dpk` (plus the upstream CLX, PE and TNT variants) |
 | `Packages\D2009` | `SynEdit_R2009.dpk` / `SynEdit_D2009.dpk` |
-| `Packages\2010` … `Packages\110A`, `Packages\XE*` | upstream's packages, paths adjusted for the new highlighter folder, otherwise untouched and untested here |
+| `Packages\110A` | upstream's Delphi 11 packages, path adjusted; the runtime package is built and verified |
+| `Packages\2010` … `Packages\104S`, `Packages\XE*` | upstream's packages, paths adjusted for the new highlighter folder, otherwise untouched and untested here |
+
+Every package that uses `{$R *.res}` now has its resource file next to it. Upstream
+left most of them out because the IDE generates them, which is fine in the IDE but
+makes a command line build fail with E1026.
 
 The D7 and D2009 packages carry the full unit set of this fork, including the
 SynUni, spell check and SimpleXML suites and the added highlighters. Those three
