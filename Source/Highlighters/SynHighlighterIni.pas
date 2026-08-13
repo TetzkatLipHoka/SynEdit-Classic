@@ -59,11 +59,15 @@ type
 
   TIniHighlightType = (typeIni, typeToml);
 
-  {$IFDEF SYN_COMPILER_11_UP}
-  TRangeState = NativeUInt;
+  {$IF CompilerVersion < 21}
+  // D7 has no NativeUInt at all, and D2009's is not pointer sized: its range
+  // analysis then claims "comparison always evaluates to False" (W1021) for
+  // fRange > rsOpenBracketsBase although the generated code is correct.
+  // Cardinal is pointer sized on Win32, which is all these compilers target.
+  TRangeState = Cardinal;
   {$ELSE}
-  TRangeState = Cardinal;   // NativeUInt was introduced in Delphi 2007
-  {$ENDIF}
+  TRangeState = NativeUInt;
+  {$IFEND}
 const
   rsUnKnown = 0;
   rsMultilineString = 1;
