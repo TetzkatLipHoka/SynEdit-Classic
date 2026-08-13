@@ -31,12 +31,19 @@ __recovery/
 *.otares
 
 # ---------------------------------------------------------------------------
-# Deliberately NOT ignored: *.dof and *.cfg below Source/Packages.
-# They carry the package search path and output directory. Without them
-# SynEdit.inc cannot find its SynEditJedi.inc and a fresh clone will not build.
-# The Delphi 7 IDE regenerates the .cfg from the .dof on every build, so seeing
-# it in a diff is expected, not a defect.
+# Deliberately NOT ignored: *.dof and *.cfg below Packages.
+# They carry the search path. Without it SynEdit.inc cannot find its
+# SynEditJedi.inc - a nested include is resolved through the search path, not
+# relative to the including file - and a fresh clone will not build. The
+# Delphi 7 IDE regenerates the .cfg from the .dof on every build, so seeing it
+# in a diff is expected, not a defect.
 # ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# Local single-package setup used with a private build tool. The public
+# packages live in Packages/<IDE> so that a plain Delphi installation is enough.
+# ---------------------------------------------------------------------------
+Source/Packages/
 
 # ---------------------------------------------------------------------------
 # Dictionary of the spell check suite (15.9 MB binary blob, never changes and

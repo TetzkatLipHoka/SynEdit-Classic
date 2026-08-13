@@ -9,55 +9,56 @@ multi-caret); the two are no longer mergeable.
 
 ## Directory layout
 
-The layout deliberately mirrors the VSoft fork so that package path and package
-name stay the same across all Delphi generations:
-
 ```
 Source\               core units
 Source\Highlighters\  all highlighters
-Source\Packages\      SynEdit_R.dpk / SynEdit_D.dpk plus project groups
+Packages\<IDE>\       packages, one folder per Delphi version (as upstream)
 ```
 
-Highlighters therefore include their configuration as `{$I ..\SynEdit.inc}`.
-**Note that this is not sufficient on its own:** `SynEdit.inc` pulls in
-`SynEditJedi.inc`, and a nested `{$I}` is *not* resolved relative to the
-including `.inc`. `Source` has to be on the include search path; the supplied
-`.dof`/`.cfg` files already do that.
+Highlighters include their configuration as `{$I ..\SynEdit.inc}`. **Note that
+this is not sufficient on its own:** `SynEdit.inc` pulls in `SynEditJedi.inc`,
+and a nested `{$I}` is resolved through the search path, *not* relative to the
+including file. `Source` therefore has to be on the include search path. The
+`.dof`/`.cfg` (Delphi 7) and the `.dproj` (Delphi 2009) in the package folders
+already carry it.
 
 ## Packages
 
-A single pair serves Delphi 7 **and** Delphi 2009:
+Everything is built from `Packages\<IDE>\`, exactly as upstream did it - a
+plain Delphi installation is all that is needed.
 
-| File | Purpose |
+| Folder | Packages |
 |---|---|
-| `SynEdit_R.dpk` / `SynEdit_D.dpk` | runtime and design time |
-| `SynEdit.bpg` | project group, Delphi 7 |
-| `SynEdit.groupproj` + `SynEdit_R.dproj` / `SynEdit_D.dproj` | project group, Delphi 2009 (format 12.0) |
-| `SynEdit_R.dof` / `.cfg`, `SynEdit_D.dof` / `.cfg` | search path and output directory |
+| `Packages\D7` | `SynEdit_R7.dpk` / `SynEdit_D7.dpk` (plus the upstream CLX, PE and TNT variants) |
+| `Packages\D2009` | `SynEdit_R2009.dpk` / `SynEdit_D2009.dpk` |
+| `Packages\2010` … `Packages\110A`, `Packages\XE*` | upstream's packages, paths adjusted for the new highlighter folder, otherwise untouched and untested here |
 
-The two compilers are told apart with `{$IFNDEF UNICODE}` and
-`{$IF CompilerVersion}`. `LIBSUFFIX` yields `SynEdit_R70.bpl` and
-`SynEdit_R2009.bpl` respectively.
+The D7 and D2009 packages carry the full unit set of this fork, including the
+SynUni, spell check and SimpleXML suites and the added highlighters. Those three
+suites are ANSI only and sit behind `{$IFNDEF UNICODE}`, so Delphi 2009 leaves
+them out. Also excluded: `SynHighlighterAsmMASM` before Delphi 2010 (needs
+`IOUtils`) and code folding before XE (`SynEditCodeFolding.pas` needs
+`Generics.Defaults`).
 
-Non-Unicode branch only (that is, Delphi 7): the SynUni, spell check and
-SimpleXML suites. `SynSpellCheck` is not Unicode clean — it indexes its tables
-with `Ord(character)` over `array[0..255]`, so it is byte oriented by design.
-Also excluded: `SynHighlighterAsmMASM` before Delphi 2010 (needs `IOUtils`) and
-code folding before XE (`SynEditCodeFolding.pas` needs `Generics.Defaults`).
+`SynSpellCheck` is not Unicode clean by design - it indexes its tables with
+`Ord(character)` over `array[0..255]`.
 
 ### Building
 
-From `Source\Packages`, with `<Lib>` being `C:\Delphi\7\Lib` or
-`C:\Delphi\2009\lib`:
+Open `Packages\D7\SynEdit_R7.dpk` (or the D2009 counterpart) in the IDE and
+build, runtime package first, then the design time one. From the command line,
+run dcc32 inside the package folder - the `.cfg` next to the package supplies
+the search paths:
 
 ```
-dcc32 SynEdit_R.dpk -B -Q -U"<Lib>;<Out>;..;..\Highlighters" -I"<Lib>;..;..\Highlighters" -R"<Lib>;.." -N"<Out>" -LE"<Out>" -LN"<Out>"
-dcc32 SynEdit_D.dpk -B -Q -U"<Lib>;<Out>;..;..\Highlighters" -I"<Lib>;..;..\Highlighters" -R"<Lib>;.." -N"<Out>" -LE"<Out>" -LN"<Out>"
+dcc32 SynEdit_R7.dpk -B -Q -U"<Lib>;<Out>" -N"<Out>" -LE"<Out>" -LN"<Out>"
+dcc32 SynEdit_D7.dpk -B -Q -U"<Lib>;<Out>" -N"<Out>" -LE"<Out>" -LN"<Out>"
 ```
 
-The design time package needs `SynEdit_R.dcp` on the `-U` path, so build the
-runtime package first. Verified with dcc32 15.0 (Delphi 7) and 20.0
-(Delphi 2009), both packages each.
+`<Lib>` is the Delphi library directory, `<Out>` the output directory; the
+design time package needs `SynEdit_R7.dcp` there, so build the runtime package
+first. Verified with dcc32 15.0 (Delphi 7) and 20.0 (Delphi 2009), both packages
+each.
 
 ## What was added on top of upstream
 
