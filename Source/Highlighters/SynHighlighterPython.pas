@@ -189,13 +189,14 @@ const
   // No need to localise keywords!
 
   // List of keywords
-  KEYWORDCOUNT = 32;
+  KEYWORDCOUNT = 34;
   KEYWORDS: array [1..KEYWORDCOUNT] of UnicodeString =
     (
     'and',
     'as',
     'assert',
     'break',
+    'case',
     'class',
     'continue',
     'def',
@@ -213,6 +214,7 @@ const
     'in',
     'is',
     'lambda',
+    'match',
     'nonlocal',
     'not',
     'or',
