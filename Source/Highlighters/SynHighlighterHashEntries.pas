@@ -100,14 +100,24 @@ type
 
   { A list of keyword entries, stored as single-linked lists under the hashvalue
     of the keyword. }
+  { The index type has to match TList.Items exactly, which is declared as
+    Items[Index: NativeInt] on compilers that have NativeInt. With an Integer
+    index this property does not fully hide the inherited one, and a Cardinal
+    argument (as used by the Asm highlighters for their hash value) then binds
+    to TList.Items - Cardinal -> NativeInt is lossless while Cardinal -> Integer
+    is not. The inherited setter writes past the end of the list without growing
+    it, so the very first keyword raises EListError. Only shows up on Win64,
+    because there NativeInt <> Integer. }
+  TSynHashIndex = {$IFDEF SYN_DELPHI_12_0_UP}NativeInt{$ELSE}Integer{$ENDIF};
+
   TSynHashEntryList = class(TList)
   protected
     { Returns the first keyword entry for a given hashcalue, or nil. }
-    function Get(HashKey: Integer): TSynHashEntry;
+    function Get(HashKey: TSynHashIndex): TSynHashEntry;
     { Adds a keyword entry under its hashvalue. Will grow the list count when
       necessary, so the maximum hashvalue should be limited outside. The correct
       order of keyword entries is maintained. }
-    procedure Put(HashKey: Integer; Entry: TSynHashEntry);
+    procedure Put(HashKey: TSynHashIndex; Entry: TSynHashEntry);
   public
 {$IFDEF LIST_CLEAR_NOT_VIRTUAL}
     { Overridden destructor clears the list and frees all contained keyword
@@ -121,7 +131,7 @@ type
 {$ENDIF}
   public
     { Type-safe access to the first keyword entry for a hashvalue. }
-    property Items[Index: Integer]: TSynHashEntry read Get write Put; default;
+    property Items[Index: TSynHashIndex]: TSynHashEntry read Get write Put; default;
   end;
 
   { Procedural type for adding keyword entries to a TSynHashEntryList when
@@ -225,7 +235,7 @@ begin
   inherited Clear;
 end;
 
-function TSynHashEntryList.Get(HashKey: Integer): TSynHashEntry;
+function TSynHashEntryList.Get(HashKey: TSynHashIndex): TSynHashEntry;
 begin
   if (HashKey >= 0) and (HashKey < Count) then
     Result := inherited Items[HashKey]
@@ -233,7 +243,7 @@ begin
     Result := nil;
 end;
 
-procedure TSynHashEntryList.Put(HashKey: Integer; Entry: TSynHashEntry);
+procedure TSynHashEntryList.Put(HashKey: TSynHashIndex; Entry: TSynHashEntry);
 var
   ListEntry: TSynHashEntry;
 begin
