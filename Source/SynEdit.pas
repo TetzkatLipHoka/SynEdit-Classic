@@ -67,6 +67,9 @@ uses
   {$IFDEF SYN_COMPILER_7}
   Themes,
   {$ENDIF}
+  {$IFDEF SYN_COMPILER_16_UP}
+  Themes, // Vcl.Themes - VCL styles, XE2 and up
+  {$ENDIF}
   {$IFDEF SYN_COMPILER_17_UP}
   Types, UITypes,
   {$ENDIF}
@@ -3635,6 +3638,15 @@ var
       // Initialize the text and background colors, maybe the line should
       // use special values for them.
       colFG := Font.Color;
+{$IFDEF SYN_COMPILER_16_UP}
+      // Under an active VCL style Font.Color is not what the control is really
+      // drawn with. An OnSpecialLineColors handler may set only the background
+      // and leave the foreground alone - it would then get the unstyled color.
+      if StyleServices.Enabled and not StyleServices.IsSystemStyle and
+        (seFont in StyleElements)
+      then
+        colFG := StyleServices.GetSystemColor(clWindowText);
+{$ENDIF}
       colBG := colEditorBG;
       bSpecialLine := DoOnSpecialLineColors(nLine, colFG, colBG);
       if bSpecialLine then
