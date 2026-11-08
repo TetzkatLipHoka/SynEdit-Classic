@@ -276,12 +276,34 @@ const
 //
 //  Miscellaneous: UnicodeString = '=,comment,display,echo,equ,%out';
 
+// IsIdentChar splits the dot off directives, so '.data' and 'data' both add
+// "data" to the same list. TSynHashEntryList raises on a duplicate; skip it
+// instead, the token is the same either way.
+function KeywordListed(AList: TSynHashEntryList; AHashValue: Cardinal;
+  const AKeyword: UnicodeString): Boolean;
+var
+  Entry: TSynHashEntry;
+begin
+  Result := False;
+  Entry := AList[AHashValue];
+  while Assigned(Entry) do
+  begin
+    if WideCompareText(Entry.Keyword, AKeyword) = 0 then
+    begin
+      Result := True;
+      Exit;
+    end;
+    Entry := Entry.Next;
+  end;
+end;
+
 procedure TSynAsmMASMSyn.DoAddKeyword(AKeyword: UnicodeString; AKind: Integer);
 var
   HashValue: Cardinal;
 begin
   HashValue := HashKey(PWideChar(AKeyword));
-  FKeywords[HashValue] := TSynHashEntry.Create(AKeyword, AKind);
+  if not KeywordListed(FKeywords, HashValue, AKeyword) then
+    FKeywords[HashValue] := TSynHashEntry.Create(AKeyword, AKind);
 end;
 
 procedure TSynAsmMASMSyn.DoAddDirectivesKeyword(AKeyword: UnicodeString; AKind: Integer);
@@ -289,7 +311,8 @@ var
   HashValue: Cardinal;
 begin
   HashValue := HashKey(PWideChar(AKeyword));
-  FDirectivesKeywords[HashValue] := TSynHashEntry.Create(AKeyword, AKind);
+  if not KeywordListed(FDirectivesKeywords, HashValue, AKeyword) then
+    FDirectivesKeywords[HashValue] := TSynHashEntry.Create(AKeyword, AKind);
 end;
 
 procedure TSynAsmMASMSyn.DoAddRegisterKeyword(AKeyword: UnicodeString; AKind: Integer);
@@ -297,7 +320,8 @@ var
   HashValue: Cardinal;
 begin
   HashValue := HashKey(PWideChar(AKeyword));
-  FRegisterKeywords[HashValue] := TSynHashEntry.Create(AKeyword, AKind);
+  if not KeywordListed(FRegisterKeywords, HashValue, AKeyword) then
+    FRegisterKeywords[HashValue] := TSynHashEntry.Create(AKeyword, AKind);
 end;
 
 procedure TSynAsmMASMSyn.DoAddApiKeyword(AKeyword: UnicodeString; AKind: Integer);
@@ -305,7 +329,8 @@ var
   HashValue: Cardinal;
 begin
   HashValue := HashKey(PWideChar(AKeyword));
-  FApiKeywords[HashValue] := TSynHashEntry.Create(AKeyword, AKind);
+  if not KeywordListed(FApiKeywords, HashValue, AKeyword) then
+    FApiKeywords[HashValue] := TSynHashEntry.Create(AKeyword, AKind);
 end;
 
 procedure TSynAsmMASMSyn.DoAddOperatorKeyword(AKeyword: UnicodeString; AKind: Integer);
@@ -313,7 +338,8 @@ var
   HashValue: Cardinal;
 begin
   HashValue := HashKey(PWideChar(AKeyword));
-  FOperatorKeywords[HashValue] := TSynHashEntry.Create(AKeyword, AKind);
+  if not KeywordListed(FOperatorKeywords, HashValue, AKeyword) then
+    FOperatorKeywords[HashValue] := TSynHashEntry.Create(AKeyword, AKind);
 end;
 
 //{$Q-}
@@ -535,6 +561,11 @@ procedure TSynAsmMASMSyn.IdentProc;
 begin
   FTokenID := IdentKind((FLine + Run));
   Inc(Run, FStringLen);
+  // Next sends '.', '?', '[' and ']' here too, and those are no identifier
+  // characters: without this Run would not move, and Next would never reach
+  // the end of the line.
+  if FStringLen = 0 then
+    Inc(Run);
   while IsIdentChar(FLine[Run]) do Inc(Run);
 end;
 
