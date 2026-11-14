@@ -135,6 +135,7 @@
         <DCCReference Include="..\..\Source\SynEditStrConst.pas"/>
         <DCCReference Include="..\..\Source\SynEditTextBuffer.pas"/>
         <DCCReference Include="..\..\Source\SynEditTypes.pas"/>
+        <DCCReference Include="..\..\Source\SynFunc.pas"/>
         <DCCReference Include="..\..\Source\SynExportHTML.pas"/>
         <DCCReference Include="..\..\Source\SynExportRTF.pas"/>
         <DCCReference Include="..\..\Source\SynExportTeX.pas"/>

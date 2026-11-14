@@ -66,6 +66,7 @@ contains
   SynEditStrConst in '..\Source\SynEditStrConst.pas',
   SynEditTextBuffer in '..\Source\SynEditTextBuffer.pas',
   SynEditTypes in '..\Source\SynEditTypes.pas',
+  SynFunc in '..\Source\SynFunc.pas',
   SynExportHTML in '..\Source\SynExportHTML.pas',
   SynExportRTF in '..\Source\SynExportRTF.pas',
   SynExportTeX in '..\Source\SynExportTeX.pas',
